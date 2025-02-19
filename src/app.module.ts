@@ -7,6 +7,7 @@ import { ConfigModule } from '@nestjs/config';
 import appConfig from './config/app.config';
 import databaseConfig from './config/database.config';
 import { envValidationSchema } from './config/env.validation';
+import { IamModule } from './iam/iam.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { envValidationSchema } from './config/env.validation';
       },
     ]),
     UsersModule,
+    IamModule,
   ],
   controllers: [AppController],
   providers: [AppService],
