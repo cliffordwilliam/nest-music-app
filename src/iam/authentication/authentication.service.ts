@@ -1,15 +1,21 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { HashingService } from '../hashing/hashing.service';
 import { SignUpDto } from './dto/sign-up.dto';
 import { PrismaService } from 'src/prisma.service';
 import { UserRole } from '@prisma/client';
 import { SignInDto } from './dto/sign-in.dto';
+import jwtConfig from '../config/jwt.config';
+import { ConfigType } from '@nestjs/config';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthenticationService {
   constructor(
     private readonly hashingService: HashingService,
     private readonly prisma: PrismaService,
+    private readonly jwtService: JwtService,
+    @Inject(jwtConfig.KEY)
+    private readonly jwtConfiguration: ConfigType<typeof jwtConfig>,
   ) {}
 
   async signUp(signUpDto: SignUpDto) {
@@ -40,7 +46,20 @@ export class AuthenticationService {
     if (!isPassOk) {
       throw new UnauthorizedException('Password does not match');
     }
-    // TODO: pass token later with passport
-    return true;
+    const accessToken = await this.jwtService.signAsync(
+      {
+        sub: isUserExist.id,
+        email: isUserExist.email,
+      },
+      {
+        audience: this.jwtConfiguration.audience,
+        issuer: this.jwtConfiguration.issuer,
+        secret: this.jwtConfiguration.secret,
+        expiresIn: this.jwtConfiguration.accessTokenTtl,
+      },
+    );
+    return {
+      accessToken,
+    };
   }
 }
