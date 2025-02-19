@@ -1,7 +1,6 @@
 import { registerAs } from '@nestjs/config';
 
 export default registerAs('jwt', () => {
-  // Ensure essential variables are set, otherwise throw an error
   const secret = process.env.JWT_SECRET;
   if (!secret) {
     throw new Error('JWT_SECRET environment variable is missing');
@@ -17,14 +16,14 @@ export default registerAs('jwt', () => {
     throw new Error('JWT_TOKEN_ISSUER environment variable is missing');
   }
 
-  const accessTokenTtl = process.env.JWT_ACCESS_TOKEN_TTL;
-  if (!accessTokenTtl) {
-    throw new Error('JWT_ACCESS_TOKEN_TTL environment variable is missing');
+  const accessTokenTtl = Number(process.env.JWT_ACCESS_TOKEN_TTL);
+  if (isNaN(accessTokenTtl)) {
+    throw new Error('JWT_ACCESS_TOKEN_TTL must be a valid number');
   }
 
-  const refreshTokenTtl = process.env.JWT_REFRESH_TOKEN_TTL;
-  if (!refreshTokenTtl) {
-    throw new Error('JWT_REFRESH_TOKEN_TTL environment variable is missing');
+  const refreshTokenTtl = Number(process.env.JWT_REFRESH_TOKEN_TTL);
+  if (isNaN(refreshTokenTtl)) {
+    throw new Error('JWT_REFRESH_TOKEN_TTL must be a valid number');
   }
 
   return {
