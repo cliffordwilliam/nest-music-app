@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, UserRole } from '@prisma/client';
 import { genSalt, hash } from 'bcryptjs';
 
 const prisma = new PrismaClient();
@@ -15,7 +15,7 @@ async function main() {
       email: 'instructor@example.com',
       name: 'John Doe',
       password,
-      role: 'INSTRUCTOR',
+      role: UserRole.INSTRUCTOR,
     },
   });
 
@@ -26,7 +26,7 @@ async function main() {
       email: 'student@example.com',
       name: 'Jane Smith',
       password,
-      role: 'STUDENT',
+      role: UserRole.STUDENT,
     },
   });
 
@@ -37,7 +37,7 @@ async function main() {
       email: 'admin@example.com',
       name: 'Admin User',
       password,
-      role: 'ADMIN',
+      role: UserRole.ADMIN,
     },
   });
 
