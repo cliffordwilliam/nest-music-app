@@ -12,6 +12,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './authentication/guards/jwt-auth.guard';
 import { RedisModule } from 'src/redis/redis.module';
 import { RefreshTokenIdsStorage } from './authentication/refresh-token-ids.storage';
+import { RolesGuard } from './authorization/roles.guard';
 
 @Module({
   imports: [
@@ -29,6 +30,10 @@ import { RefreshTokenIdsStorage } from './authentication/refresh-token-ids.stora
     {
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard,
     },
   ],
   controllers: [AuthenticationController],
