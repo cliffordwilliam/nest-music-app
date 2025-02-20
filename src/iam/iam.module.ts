@@ -11,6 +11,7 @@ import { JwtStrategy } from './authentication/strategies/jwt.strategy';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './authentication/guards/jwt-auth.guard';
 import { RedisModule } from 'src/redis/redis.module';
+import { RefreshTokenIdsStorage } from './authentication/refresh-token-ids.storage';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { RedisModule } from 'src/redis/redis.module';
     PrismaService,
     HashingService,
     AuthenticationService,
+    RefreshTokenIdsStorage,
     {
       provide: APP_GUARD,
       useClass: JwtAuthGuard,

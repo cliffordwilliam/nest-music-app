@@ -10,6 +10,8 @@ import { AccessTokenData } from '../interfaces/access-token-data.interface';
 import { RefreshTokenData } from '../interfaces/refresh-token-data.interface';
 import { SignInDto } from './dto/sign-in.dto';
 import { SignUpDto } from './dto/sign-up.dto';
+import { RefreshTokenIdsStorage } from './refresh-token-ids.storage';
+import { RefreshTokenDto } from './dto/refresh-token.dto';
 
 @Injectable()
 export class AuthenticationService {
@@ -19,6 +21,7 @@ export class AuthenticationService {
     private readonly jwtService: JwtService,
     @Inject(jwtConfig.KEY)
     private readonly jwtConfiguration: ConfigType<typeof jwtConfig>,
+    private readonly refreshTokenIdsStorage: RefreshTokenIdsStorage,
   ) {}
 
   async signUp(signUpDto: SignUpDto) {
@@ -59,6 +62,7 @@ export class AuthenticationService {
   }
 
   private async makeTokens(isUserExist: User) {
+    const refreshTokenId = randomUUID();
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.signAsync(
         {
@@ -76,7 +80,7 @@ export class AuthenticationService {
       this.jwtService.signAsync(
         {
           sub: isUserExist.id,
-          refreshTokenId: randomUUID(),
+          refreshTokenId,
         } as RefreshTokenData,
         {
           audience: this.jwtConfiguration.audience,
@@ -86,9 +90,36 @@ export class AuthenticationService {
         },
       ),
     ]);
+    await this.refreshTokenIdsStorage.insert(isUserExist.id, refreshTokenId); // remember tiket given out
     return {
       accessToken,
       refreshToken,
     };
+  }
+
+  async refreshTokens(refreshTokenDto: RefreshTokenDto) {
+    try {
+      const { sub, refreshTokenId }: RefreshTokenData =
+        await this.jwtService.verifyAsync(
+          refreshTokenDto.refreshToken,
+          this.jwtConfiguration,
+        );
+      const isUserExist = await this.prisma.user.findUniqueOrThrow({
+        where: { id: sub },
+      });
+      // check if user holds tiket that i just gave them
+      const isValid = await this.refreshTokenIdsStorage.validate(
+        isUserExist.id,
+        refreshTokenId,
+      );
+      if (isValid) {
+        await this.refreshTokenIdsStorage.invalidate(isUserExist.id); // burn old tiket
+      } else {
+        throw new Error('Refresh token is invalid'); // ur tiket is fake
+      }
+      return this.makeTokens(isUserExist);
+    } catch {
+      throw new UnauthorizedException();
+    }
   }
 }
