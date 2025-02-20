@@ -12,7 +12,7 @@ import { REDIS_CLIENT } from './redis.constants';
       useFactory: (redisConfiguration: ConfigType<typeof redisConfig>) => {
         return new Redis({
           ...redisConfiguration,
-          family: 4, // Force IPv4
+          family: 0, // Force IPv4
         });
       },
       inject: [redisConfig.KEY],
