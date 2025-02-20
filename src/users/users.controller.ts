@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Delete,
+  ForbiddenException,
   Get,
   Param,
   Patch,
@@ -31,23 +32,32 @@ export class UsersController {
     return this.usersService.findAll();
   }
 
-  @Roles(UserRole.STUDENT)
-  @Get('profile')
+  @Get('me')
   getProfile(@ActiveUser() user: AccessTokenData) {
-    // todo: return all user item! not just payload, use sub to find one
-    return user;
+    return this.usersService.findOne(user.sub);
   }
 
+  @Roles(UserRole.ADMIN)
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.usersService.findOne(+id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+  update(
+    @Param('id') id: number,
+    @Body() updateUserDto: UpdateUserDto,
+    @ActiveUser() user: AccessTokenData,
+  ) {
+    // Check if the user is an admin OR updating their own account
+    if (user.role !== UserRole.ADMIN && user.sub !== id) {
+      throw new ForbiddenException('You can only update your own details.');
+    }
+
     return this.usersService.update(+id, updateUserDto);
   }
 
+  @Roles(UserRole.ADMIN)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.usersService.remove(+id);
