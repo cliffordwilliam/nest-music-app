@@ -10,6 +10,8 @@ import {
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { ActiveUser } from 'src/iam/decorators/active-user.decorator';
+import { AccessTokenData } from 'src/iam/interfaces/access-token-data.interface';
 
 @Controller('users')
 export class UsersController {
@@ -23,6 +25,12 @@ export class UsersController {
   @Get()
   findAll() {
     return this.usersService.findAll();
+  }
+
+  @Get('profile')
+  getProfile(@ActiveUser() user: AccessTokenData) {
+    // todo: return all user item! not just payload, use sub to find one
+    return user;
   }
 
   @Get(':id')
