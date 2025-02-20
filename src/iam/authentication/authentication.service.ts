@@ -22,6 +22,12 @@ export class AuthenticationService {
   ) {}
 
   async signUp(signUpDto: SignUpDto) {
+    const isUserExist = await this.prisma.user.findUnique({
+      where: { email: signUpDto.email },
+    });
+    if (isUserExist) {
+      throw new UnauthorizedException('Email is already in use');
+    }
     const email = signUpDto.email;
     const password = await this.hashingService.hash(signUpDto.password);
 
