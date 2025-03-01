@@ -10,7 +10,12 @@ import { REDIS_CLIENT } from './redis.constants';
     {
       provide: REDIS_CLIENT,
       useFactory: (redisConfiguration: ConfigType<typeof redisConfig>) => {
-        return new Redis(redisConfiguration);
+        return new Redis({
+          host: redisConfiguration.host,
+          port: redisConfiguration.port,
+          password: redisConfiguration.password,
+          family: redisConfiguration.family,
+        });
       },
       inject: [redisConfig.KEY],
     },

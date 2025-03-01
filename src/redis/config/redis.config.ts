@@ -16,5 +16,12 @@ export default registerAs('redis', () => {
     throw new Error('Missing environment variable: REDIS_PASSWORD');
   }
 
-  return { host, port, password };
+  const family = process.env.REDIS_FAMILY
+    ? Number(process.env.REDIS_FAMILY)
+    : NaN;
+  if (!family) {
+    throw new Error('Missing environment variable: REDIS_FAMILY');
+  }
+
+  return { host, port, password, family };
 });
