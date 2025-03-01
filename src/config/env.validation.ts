@@ -22,6 +22,7 @@ export const envValidationSchema = Joi.object({
   REDIS_HOST: Joi.string().hostname().required(),
   REDIS_PASSWORD: Joi.string().required(),
   REDIS_PORT: Joi.number().integer().min(1).max(65535).required(),
+  REDIS_FAMILY: Joi.number().valid(4, 6, 0).default(4), // Accepts IPv4 (4) or IPv6 (6), defaults to IPv4
 
   STRIPE_SECRET: Joi.string().required(),
 }).unknown(true); // Allow additional environment variables (if needed)
