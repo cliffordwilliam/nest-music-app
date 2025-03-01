@@ -105,3 +105,61 @@ npx prisma migrate deploy
 npx prisma generate
 npx prisma db seed
 ```
+
+## Todo
+
+### **1. User Management**
+
+- [x] **`GET /users/me`** – Get details of the currently logged-in user.
+- [x] **`GET /users/:id`** – Get details of a specific user (admin-only).
+- [x] **`PATCH /users/:id`** – Update user details (admin or self).
+- [x] **`DELETE /users/:id`** – Delete a user account (admin-only).
+
+---
+
+### **2. Course Management**
+
+For managing courses, especially for instructors and admins:
+
+- [ ] **`POST /courses`** – Create a new course (instructors & admins only).
+- [ ] **`GET /courses`** – Get a list of available courses.
+- [ ] **`GET /courses/:id`** – Get details of a specific course.
+- [ ] **`PATCH /courses/:id`** – Update a course (only the instructor or admin).
+- [ ] **`DELETE /courses/:id`** – Delete a course (admin-only).
+
+---
+
+### **3. Enrollment Management**
+
+To allow students to enroll in courses:
+
+- [ ] **`POST /enrollments`** – Enroll a student in a course.
+- [ ] **`GET /enrollments`** – Get all enrollments for the logged-in user.
+- [ ] **`DELETE /enrollments/:id`** – Unenroll from a course.
+
+---
+
+### **4. Payment System**
+
+To manage course payments:
+
+- [ ] **`POST /payments`** – Make a payment for a course.
+- [ ] **`GET /payments`** – Get payment history for the logged-in user.
+- [ ] **`GET /payments/:id`** – Get payment details by ID.
+- [ ] **`PATCH /payments/:id`** – Update payment status (admin-only).
+
+---
+
+### **5. Instructor-Specific Features**
+
+- [ ] **`GET /instructor/courses`** – Get all courses taught by the logged-in instructor.
+- [ ] **`GET /instructor/courses/:id/students`** – Get students enrolled in a specific course.
+- [ ] **`POST /instructor/courses/:id/assignments`** – Assign homework or tasks (optional).
+
+---
+
+### **6. Admin Panel Features**
+
+- [ ] **`GET /admin/users`** – Get all users.
+- [ ] **`GET /admin/payments`** – View all payments.
+- [ ] **`GET /admin/enrollments`** – View all enrollments.
