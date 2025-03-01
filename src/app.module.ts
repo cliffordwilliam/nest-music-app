@@ -8,6 +8,7 @@ import appConfig from './config/app.config';
 import databaseConfig from './config/database.config';
 import { envValidationSchema } from './config/env.validation';
 import { IamModule } from './iam/iam.module';
+import { CoursesModule } from './courses/courses.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { IamModule } from './iam/iam.module';
     ]),
     UsersModule,
     IamModule,
+    CoursesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
