@@ -10,11 +10,14 @@ import {
 import { CoursesService } from './courses.service';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
+import { Roles } from 'src/iam/authorization/role.decorator';
+import { UserRole } from '@prisma/client';
 
 @Controller('courses')
 export class CoursesController {
   constructor(private readonly coursesService: CoursesService) {}
 
+  @Roles(UserRole.INSTRUCTOR, UserRole.ADMIN)
   @Post()
   create(@Body() createCourseDto: CreateCourseDto) {
     return this.coursesService.create(createCourseDto);
