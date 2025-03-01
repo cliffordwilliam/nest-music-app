@@ -19,7 +19,7 @@ export default registerAs('redis', () => {
   const family = process.env.REDIS_FAMILY
     ? Number(process.env.REDIS_FAMILY)
     : NaN;
-  if (!family) {
+  if (isNaN(family)) {
     throw new Error('Missing environment variable: REDIS_FAMILY');
   }
 
