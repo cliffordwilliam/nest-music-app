@@ -100,10 +100,26 @@ Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
 
 ## Docker setup pre dep command shortcut
 
+make sure that docker desktop is running
+
 ```bash
+docker-compose up -d
 npx prisma migrate deploy
 npx prisma generate
 npx prisma db seed
+npm run start:dev
+```
+
+run studio if you want
+
+```bash
+npx prisma studio
+```
+
+stop container
+
+```bash
+docker-compose down
 ```
 
 ## Todo
@@ -121,7 +137,7 @@ npx prisma db seed
 
 For managing courses, especially for instructors and admins:
 
-- [ ] **`POST /courses`** – Create a new course (instructors & admins only).
+- [x] **`POST /courses`** – Create a new course (instructors & admins only).
 - [ ] **`GET /courses`** – Get a list of available courses.
 - [ ] **`GET /courses/:id`** – Get details of a specific course.
 - [ ] **`PATCH /courses/:id`** – Update a course (only the instructor or admin).

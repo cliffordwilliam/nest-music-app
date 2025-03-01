@@ -1,11 +1,5 @@
-import {
-  IsString,
-  IsInt,
-  IsDate,
-  IsNumber,
-  Min,
-  IsOptional,
-} from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsDate, IsInt, IsNumber, IsString, Min } from 'class-validator';
 
 export class CreateCourseDto {
   @IsString()
@@ -14,9 +8,11 @@ export class CreateCourseDto {
   @IsString()
   description: string;
 
+  @Type(() => Date)
   @IsDate()
   startDate: Date;
 
+  @Type(() => Date)
   @IsDate()
   endDate: Date;
 
@@ -26,27 +22,4 @@ export class CreateCourseDto {
 
   @IsInt()
   instructorId: number;
-}
-
-export class UpdateCourseDto {
-  @IsOptional()
-  @IsString()
-  name?: string;
-
-  @IsOptional()
-  @IsString()
-  description?: string;
-
-  @IsOptional()
-  @IsDate()
-  startDate?: Date;
-
-  @IsOptional()
-  @IsDate()
-  endDate?: Date;
-
-  @IsOptional()
-  @IsNumber()
-  @Min(0)
-  price?: number;
 }
