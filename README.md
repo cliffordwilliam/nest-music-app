@@ -128,6 +128,13 @@ stop container
 docker-compose down
 ```
 
+## Migration shortcut
+
+```bash
+npx prisma migrate dev --name remove_on_update_cascade
+npx prisma generate
+```
+
 ## Todo
 
 ### **1. User Management**
