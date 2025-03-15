@@ -39,8 +39,8 @@ export class UsersController {
 
   @Roles(UserRole.ADMIN)
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.usersService.findOne(+id);
+  findOne(@Param('id') id: number) {
+    return this.usersService.findOne(id);
   }
 
   @Patch(':id')
@@ -54,12 +54,12 @@ export class UsersController {
       throw new ForbiddenException('You can only update your own details.');
     }
 
-    return this.usersService.update(+id, updateUserDto);
+    return this.usersService.update(id, updateUserDto);
   }
 
   @Roles(UserRole.ADMIN)
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.usersService.remove(+id);
+  remove(@Param('id') id: number) {
+    return this.usersService.remove(id);
   }
 }
