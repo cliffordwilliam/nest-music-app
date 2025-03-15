@@ -110,6 +110,12 @@ npx prisma db seed
 npm run start:dev
 ```
 
+see auto generated swag
+
+```
+http://localhost:3000/swag
+```
+
 run studio if you want
 
 ```bash
@@ -138,7 +144,7 @@ docker-compose down
 For managing courses, especially for instructors and admins:
 
 - [x] **`POST /courses`** – Create a new course (instructors & admins only).
-- [ ] **`GET /courses`** – Get a list of available courses.
+- [x] **`GET /courses`** – Get a list of available courses.
 - [ ] **`GET /courses/:id`** – Get details of a specific course.
 - [ ] **`PATCH /courses/:id`** – Update a course (only the instructor or admin).
 - [ ] **`DELETE /courses/:id`** – Delete a course (admin-only).

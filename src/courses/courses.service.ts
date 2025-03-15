@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
 import { PrismaService } from 'src/prisma.service';
+import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto';
 
 @Injectable()
 export class CoursesService {
@@ -13,8 +14,12 @@ export class CoursesService {
     });
   }
 
-  findAll() {
-    return `This action returns all courses`;
+  findAll(paginationQuery: PaginationQueryDto) {
+    const { limit, offset } = paginationQuery;
+    return this.prisma.course.findMany({
+      skip: offset,
+      take: limit,
+    });
   }
 
   findOne(id: number) {

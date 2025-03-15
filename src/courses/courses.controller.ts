@@ -6,12 +6,14 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { CoursesService } from './courses.service';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
 import { Roles } from 'src/iam/authorization/role.decorator';
 import { UserRole } from '@prisma/client';
+import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto';
 
 @Controller('courses')
 export class CoursesController {
@@ -24,8 +26,8 @@ export class CoursesController {
   }
 
   @Get()
-  findAll() {
-    return this.coursesService.findAll();
+  findAll(@Query() paginationQuery: PaginationQueryDto) {
+    return this.coursesService.findAll(paginationQuery);
   }
 
   @Get(':id')
