@@ -48,12 +48,12 @@ model Course {
 model Enrollment {
   id        Int      @id @default(autoincrement())
   userId    Int?
-  courseId  Int
+  courseId  Int?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   user   User?  @relation(fields: [userId], references: [id], onDelete: SetNull)
-  course Course @relation(fields: [courseId], references: [id])
+  course Course? @relation(fields: [courseId], references: [id], onDelete: SetNull)
 }
 
 model Payment {
@@ -61,11 +61,11 @@ model Payment {
   amount    Float
   status    PaymentStatus
   userId    Int?
-  courseId  Int
+  courseId  Int?
   createdAt DateTime      @default(now())
 
   user   User?  @relation(fields: [userId], references: [id], onDelete: SetNull)
-  course Course @relation(fields: [courseId], references: [id])
+  course Course? @relation(fields: [courseId], references: [id], onDelete: SetNull)
 }
 
 enum UserRole {

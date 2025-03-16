@@ -104,22 +104,11 @@ make sure that docker desktop is running
 
 ```bash
 docker-compose up -d
+npx prisma migrate dev
 npx prisma migrate deploy
 npx prisma generate
 npx prisma db seed
 npm run start:dev
-```
-
-see auto generated swag
-
-```
-http://localhost:3000/swag
-```
-
-run studio if you want
-
-```bash
-npx prisma studio
 ```
 
 stop container
@@ -128,10 +117,22 @@ stop container
 docker-compose down
 ```
 
+see auto generated swag
+
+```
+http://localhost:3000/swag
+```
+
+run studio if you want visualized db
+
+```bash
+npx prisma studio
+```
+
 ## Migration shortcut
 
 ```bash
-npx prisma migrate dev --name remove_on_update_cascade
+npx prisma migrate dev --name make_payment_course_optional
 npx prisma generate
 ```
 
@@ -152,9 +153,9 @@ For managing courses, especially for instructors and admins:
 
 - [x] **`POST /courses`** – Create a new course (instructors & admins only).
 - [x] **`GET /courses`** – Get a list of available courses.
-- [ ] **`GET /courses/:id`** – Get details of a specific course.
-- [ ] **`PATCH /courses/:id`** – Update a course (only the instructor or admin).
-- [ ] **`DELETE /courses/:id`** – Delete a course (admin-only).
+- [x] **`GET /courses/:id`** – Get details of a specific course.
+- [x] **`PATCH /courses/:id`** – Update a course (only the instructor or admin).
+- [x] **`DELETE /courses/:id`** – Delete a course (admin-only).
 
 ---
 

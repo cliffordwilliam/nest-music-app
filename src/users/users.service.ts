@@ -1,7 +1,12 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from 'src/prisma.service';
+import { UserRole } from '@prisma/client';
 
 @Injectable()
 export class UsersService {
@@ -43,6 +48,14 @@ export class UsersService {
 
     if (!user) {
       throw new NotFoundException(`User #${id} not found`);
+    }
+
+    // Validate role if provided
+    if (
+      updateUserDto.role &&
+      !Object.values(UserRole).includes(updateUserDto.role)
+    ) {
+      throw new BadRequestException('Invalid role provided');
     }
 
     return this.prisma.user.update({
